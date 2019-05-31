@@ -96,6 +96,10 @@ def run(net, loader, optimizer, tracker, train=False, prefix='', epoch=0):
         return accs_train, losses
 
 def main():
+    # set is you want to retrain
+    retrain = False
+    retrain_path = "logs/cg_pretrained"
+    
     if len(sys.argv) > 1:
         name = ''.join(sys.argv[1:])
     else:
@@ -108,8 +112,18 @@ def main():
 
     train_loader = data.get_loader(train=True)
     val_loader = data.get_loader(val=True)
+    
+    if retrain:
+        print("Retraining from" + retrain_path)
+        log = torch.load(retrain_path + '.pth')
+        tokens = len(log['vocab']['question']) + 1
 
-    net = nn.DataParallel(model.Net(train_loader.dataset.num_tokens)).cuda()
+        net = torch.nn.DataParallel(model.Net(tokens)).cuda()
+        net.load_state_dict(log['weights'])
+
+    else:
+        net = nn.DataParallel(model.Net(train_loader.dataset.num_tokens)).cuda()
+        
     optimizer = optim.Adam([p for p in net.parameters() if p.requires_grad])
 
     tracker = utils.Tracker()
