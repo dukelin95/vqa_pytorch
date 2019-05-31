@@ -27,9 +27,12 @@ total_iterations = 0
 
 def run(net, loader, optimizer, tracker, train=False, prefix='', epoch=0):
     """ Run an epoch over the given loader """
+    losses = []
     if train:
         net.train()
         tracker_class, tracker_params = tracker.MovingMeanMonitor, {'momentum': 0.99}
+        accs_train = []
+        
     else:
         net.eval()
         tracker_class, tracker_params = tracker.MeanMonitor, {}
@@ -73,23 +76,28 @@ def run(net, loader, optimizer, tracker, train=False, prefix='', epoch=0):
             accs.append(acc.view(-1))
             idxs.append(idx.view(-1).clone())
 
-        loss_tracker.append(loss.data[0])
-        # acc_tracker.append(acc.mean())
+        loss_tracker.append(loss.data)
+
         for a in acc:
             acc_tracker.append(a.item())
+    
         fmt = '{:.4f}'.format
         tq.set_postfix(loss=fmt(loss_tracker.mean.value), acc=fmt(acc_tracker.mean.value))
-
+        
+        accs_train.append(acc_tracker.mean.value)
+        losses.append(loss_tracker.mean.value.item())
+        
     if not train:
         answ = list(torch.cat(answ, dim=0))
         accs = list(torch.cat(accs, dim=0))
         idxs = list(torch.cat(idxs, dim=0))
         return answ, accs, idxs
-
+    else:
+        return accs_train, losses
 
 def main():
     if len(sys.argv) > 1:
-        name = ' '.join(sys.argv[1:])
+        name = ''.join(sys.argv[1:])
     else:
         from datetime import datetime
         name = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
@@ -106,11 +114,18 @@ def main():
 
     tracker = utils.Tracker()
     config_as_dict = {k: v for k, v in vars(config).items() if not k.startswith('__')}
-
+    
+    train_acc = []
+    train_loss = []
+    val_acc = []
     for i in range(config.epochs):
-        _ = run(net, train_loader, optimizer, tracker, train=True, prefix='train', epoch=i)
+        accs, losses = run(net, train_loader, optimizer, tracker, train=True, prefix='train', epoch=i)
         r = run(net, val_loader, optimizer, tracker, train=False, prefix='val', epoch=i)
-
+        
+        train_acc.append(accs)
+        train_loss.append(losses)
+        val_acc.append(r[1])
+        
         results = {
             'name': name,
             'tracker': tracker.to_dict(),
@@ -124,7 +139,9 @@ def main():
             'vocab': train_loader.dataset.vocab,
         }
         torch.save(results, target_name)
-
+        
+        with open(name + '_results.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
+            pickle.dump([train_acc, train_loss, val_acc], f)
 
 if __name__ == '__main__':
     main()
