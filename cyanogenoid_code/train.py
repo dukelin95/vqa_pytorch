@@ -28,10 +28,10 @@ total_iterations = 0
 def run(net, loader, optimizer, tracker, train=False, prefix='', epoch=0):
     """ Run an epoch over the given loader """
     losses = []
+    accs_train = []
     if train:
         net.train()
         tracker_class, tracker_params = tracker.MovingMeanMonitor, {'momentum': 0.99}
-        accs_train = []
         
     else:
         net.eval()
@@ -122,6 +122,7 @@ def main():
         net.load_state_dict(log['weights'])
 
     else:
+        print("Training new net")
         net = nn.DataParallel(model.Net(train_loader.dataset.num_tokens)).cuda()
         
     optimizer = optim.Adam([p for p in net.parameters() if p.requires_grad])
