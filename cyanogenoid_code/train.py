@@ -46,6 +46,7 @@ def run(net, loader, optimizer, tracker, train=False, prefix='', epoch=0):
     acc_tracker = tracker.track('{}_acc'.format(prefix), tracker_class(**tracker_params))
 
     log_softmax = nn.LogSoftmax().cuda()
+
     for v, q, a, idx, q_len in tq:
         var_params = {
             'volatile': not train,
@@ -87,7 +88,8 @@ def run(net, loader, optimizer, tracker, train=False, prefix='', epoch=0):
         
         accs_train.append(acc_tracker.mean.value)
         losses.append(loss_tracker.mean.value.item())
-        
+     
+            
     if not train:
         answ = list(torch.cat(answ, dim=0))
         accs = list(torch.cat(accs, dim=0))
@@ -98,8 +100,8 @@ def run(net, loader, optimizer, tracker, train=False, prefix='', epoch=0):
 
 def main():
     # set is you want to retrain
-    retrain = False
-    retrain_path = "logs/cg_pretrained"
+    retrain = True
+    retrain_path = "logs/DropOut0"
     
     if len(sys.argv) > 1:
         name = ''.join(sys.argv[1:])
@@ -138,9 +140,9 @@ def main():
         accs, losses = run(net, train_loader, optimizer, tracker, train=True, prefix='train', epoch=i)
         r = run(net, val_loader, optimizer, tracker, train=False, prefix='val', epoch=i)
         
-        train_acc.append(accs)
-        train_loss.append(losses)
-        val_acc.append(r[1])
+        train_acc.append(sum(accs)/len(accs))
+        train_loss.append(sum(losses)/len(losses))
+        val_acc.append(sum(r[1])/ len(r[1]))
         
         results = {
             'name': name,
