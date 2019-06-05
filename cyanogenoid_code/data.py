@@ -12,6 +12,15 @@ import torchvision.transforms as transforms
 import config
 import utils
 
+def get_VQA(train=False, val=False, test=False):
+    assert train + val + test == 1, 'need to set exactly one of {train, val, test} to True'
+    split = VQA(
+        utils.path_for(train=train, val=val, test=test, question=True),
+        utils.path_for(train=train, val=val, test=test, answer=True),
+        config.preprocessed_path,
+        answerable_only=train,
+    )
+    return split
 
 def get_loader(train=False, val=False, test=False):
     """ Returns a data loader for the desired split """
@@ -138,7 +147,7 @@ class VQA(data.Dataset):
         dataset = self.features_file['features']
         img = dataset[index].astype('float32')
         return torch.from_numpy(img)
-
+    
     def __getitem__(self, item):
         if self.answerable_only:
             # change of indices to only address answerable questions
