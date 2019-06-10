@@ -6,15 +6,14 @@
 - Sneha Kondur
 - Tyler Farnan
 ## Requirements
+Need python-3.6
 Run pip install pytorch, tqdm, pickle, torchvision, h5py, scipy  
-Optional: OpenCV for graph  
+Optional: OpenCV for viewing glimpse maps
 ## Description
 This project uses the network from https://arxiv.org/abs/1704.03162 to solve the visual question answering problem. We extend the paper by testing implementations of the network with the addition or ablation of batch normalization and dropout. The dataset can be downloaded from here: https://visualqa.org/download.html. This needs to be preprocessed (requires 99GB of space) so this is not a part of the repo. Also the weights are not a part of the repo as they are above the 100MB limit, they can be found here: https://drive.google.com/drive/folders/1iSwnzx4nl-MU8RuQ6T--VIl32cOYuLId?usp=sharing
 
-
 ## To demo:
-Download demo_weights.zip and demo_model.py from:  
-https://drive.google.com/drive/folders/1iSwnzx4nl-MU8RuQ6T--VIl32cOYuLId?usp=sharing  
+Download demo_weights.zip and demo_model.py from: https://drive.google.com/drive/folders/1iSwnzx4nl-MU8RuQ6T--VIl32cOYuLId?usp=sharing  
 Unzip demo_weight.zip  
 Follow steps in demo.ipynb  
 
