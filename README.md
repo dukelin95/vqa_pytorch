@@ -13,9 +13,10 @@
 This project uses the network from https://arxiv.org/abs/1704.03162 to solve the visual question answering problem. We extend the paper by testing implementations of the network with the addition or ablation of batch normalization and dropout. The dataset can be downloaded from here: https://visualqa.org/download.html. This needs to be preprocessed (requires 99GB of space) so this is not a part of the repo. Also the pretrained network weights for all four experiments are not a part of the repo as they are above the 100MB limit, they can be found here: https://drive.google.com/drive/folders/1iSwnzx4nl-MU8RuQ6T--VIl32cOYuLId?usp=sharing
 
 ## To demo:
-1. Download demo_weights.zip and demo_model.py from: https://drive.google.com/drive/folders/1iSwnzx4nl-MU8RuQ6T--VIl32cOYuLId?usp=sharing  
-2. Unzip demo_weight.zip  
-3. Follow steps in demo.ipynb  
+1. Download demo_weights.zip from: https://drive.google.com/drive/folders/1iSwnzx4nl-MU8RuQ6T--VIl32cOYuLId?usp=sharing  
+2. Unzip demo_weight.zip 
+3. Put the weight file in the same directory
+4. Follow steps in demo.ipynb  
 
 ## To train:
 1. Download dataset from: https://visualqa.org/download.html  
