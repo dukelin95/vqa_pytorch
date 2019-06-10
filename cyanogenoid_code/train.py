@@ -100,7 +100,7 @@ def run(net, loader, optimizer, tracker, train=False, prefix='', epoch=0):
 
 def main():
     # set is you want to retrain
-    retrain = True
+    retrain = False
     retrain_path = "logs/DropOut0"
     
     if len(sys.argv) > 1:

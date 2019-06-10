@@ -1,12 +1,10 @@
 # paths
-<<<<<<< HEAD
 qa_path = './data/'  # directory containing the question and annotation jsons
 train_path = './data/train2014'  # directory of training images
 val_path = './data/val2014'  # directory of validation images
 test_path = './data/test2015'  # directory of test images
 preprocessed_path = './resnet-14x14.h5'  # path where preprocessed features are saved to and loaded from
 vocabulary_path = 'vocab.json'  # path where the used vocabularies for question and answers are saved to
->>>>>>> 94f8d0bf15d3f894d46daa5284f9f1a5e97adb10
 
 task = 'v2_OpenEnded'
 dataset = 'mscoco'
