@@ -10,7 +10,7 @@
     -Run pip install pytorch, tqdm, pickle, torchvision, h5py, scipy  
 2. Optional: OpenCV for viewing glimpse maps
 ## Description
-This project uses the network from https://arxiv.org/abs/1704.03162 to solve the visual question answering problem. We extend the paper by testing implementations of the network with the addition or ablation of batch normalization and dropout. The dataset can be downloaded from here: https://visualqa.org/download.html. This needs to be preprocessed (requires 99GB of space) so this is not a part of the repo. Also the weights are not a part of the repo as they are above the 100MB limit, they can be found here: https://drive.google.com/drive/folders/1iSwnzx4nl-MU8RuQ6T--VIl32cOYuLId?usp=sharing
+This project uses the network from https://arxiv.org/abs/1704.03162 to solve the visual question answering problem. We extend the paper by testing implementations of the network with the addition or ablation of batch normalization and dropout. The dataset can be downloaded from here: https://visualqa.org/download.html. This needs to be preprocessed (requires 99GB of space) so this is not a part of the repo. Also the pretrained network weights for all four experiments are not a part of the repo as they are above the 100MB limit, they can be found here: https://drive.google.com/drive/folders/1iSwnzx4nl-MU8RuQ6T--VIl32cOYuLId?usp=sharing
 
 ## To demo:
 1. Download demo_weights.zip and demo_model.py from: https://drive.google.com/drive/folders/1iSwnzx4nl-MU8RuQ6T--VIl32cOYuLId?usp=sharing  
@@ -20,7 +20,7 @@ This project uses the network from https://arxiv.org/abs/1704.03162 to solve the
 ## To train:
 1. Download dataset from: https://visualqa.org/download.html  
     -VQA Annotations, Input Questions, Input Images (training, validation, and testing)  
-2. Unzip into ./cyanogenoid_code/data/  
+2. Unzip into ./cyanogenoid_code/data/ (make the directory)
 3. In ./cyanogenoid_code/  
     -Run preprocess-images.py and preprocess-vocab.py  
     -Run train.py   
@@ -31,8 +31,7 @@ root/cyanogenoid_code/
 |
 +----demo
 |       |   vqaTools/vqa.py -- class to view images and questions 
-+----logs
-|       |   -- empty directory to save logs in
+|       |   demo jpgs -- images for demo.ipynb
 +----resnet
 |       |   -- directory for preprocessing data
 |
@@ -47,7 +46,7 @@ root/cyanogenoid_code/
 |    preprocess-vocab.py -- preprocess the tokens for vocab with an lstm, creates vocabulary for attention (vocab.json)
 |    train.py -- trains the model, can retrain from another model by setting parameters in file
 |    utils.py -- utility functions (getting transform, paths, accuracy)
-|    demo.ipynb -- demo model with batch normalization and 50% dropout
+|    demo.ipynb -- demo model with batch normalization and 50% dropout, randomly view 1 of 3 preset images and questions through network
 |    graph_attention_QA.ipynb -- notebook used to view images, questions, network outputs, and glimpse maps
 ```
 
